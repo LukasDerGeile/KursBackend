@@ -60,4 +60,4 @@ if (file_exists($requestView)) {
     require_once(ABSPATH.'/app/error/not_found.php');
 }
 
-echo 'Ja Bruder es funktioniart';
+echo 'Ja Bruder es funktioniart.';
