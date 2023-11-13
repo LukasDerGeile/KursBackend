@@ -1,7 +1,7 @@
 <?php
 
 use ext\DB;
-use ext\Sanitize;
+use ext\sanitize;
 
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
@@ -27,7 +27,7 @@ $pdo = (new DB())->connect();
 $requestView = '';
 
 if (REQUESTURI === '' OR REQUESTURI === 'home') {
-    $requestView = ABSPATH.'/app/home/index.php';
+    $requestView = ABSPATH.'/app/home.php';
 } else {
     $split_requesturi = explode('/', REQUESTURI);
 
@@ -59,3 +59,5 @@ if (file_exists($requestView)) {
 } else {
     require_once(ABSPATH.'/app/error/not_found.php');
 }
+
+echo 'Ja Bruder es funktioniart';

@@ -3,10 +3,10 @@
 namespace ext;
 
 class DB {
-    private $host = 'your_database_host';
-    private $dbname = 'your_database_name';
-    private $username = 'your_database_username';
-    private $password = 'your_database_password';
+    private $host = 'schule.winnert1.dbs.hostpoint.internal';
+    private $dbname = 'winnert1_m295lukas';
+    private $username = 'winnert1_schule';
+    private $password = 'FEA9PNz3p+tu+8!?MPrP';
     private $charset = 'utf8';
     private $dsn;
     private $options;
