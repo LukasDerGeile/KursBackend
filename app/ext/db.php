@@ -1,5 +1,11 @@
 <?php
+/**
+ * [Description DB]
+ */
 class DB{
+    /**
+     * @return [type]
+     */
     public static function getPdo()
     {
         $user = 'winnert1_schule';
