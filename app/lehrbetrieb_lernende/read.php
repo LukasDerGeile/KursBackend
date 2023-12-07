@@ -1,25 +1,21 @@
 <?php
 header("Content-Type: application/json; charset=utf-8");
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 require_once $_SERVER["DOCUMENT_ROOT"] . "/ext/sanitize.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/ext/db.php";
+
+$pdo = DB::getPdo();
 
 $requestUri = $_SERVER["REQUEST_URI"];
 $parts = explode('/', rtrim($requestUri, '/'));
 
 $id = end($parts);
 
-$pdo = DB::getPdo();
-
 if (ctype_digit($id)) {
-    $statement = $pdo->prepare("SELECT * FROM tbl_kurse WHERE id_kurs = :id LIMIT 1");
-    $statement->bindValue("id", $id, PDO::PARAM_INT);
+    $statement = $pdo->prepare("SELECT * FROM tbl_lehrbetriebe_lernende WHERE id_lehrbetrieb_lernende = :id LIMIT 1");
+    $statement->bindParam("id", $id, PDO::PARAM_INT);
 } else {
-    $statement = $pdo->prepare("SELECT * FROM tbl_kurse");
+    $statement = $pdo->prepare("SELECT * FROM tbl_lehrbetriebe_lernende");
 }
 
 if ($statement->execute()) {

@@ -4,30 +4,40 @@ header("Content-Type: application/json; charset=utf-8");
 require_once $_SERVER["DOCUMENT_ROOT"] . "/ext/sanitize.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/ext/db.php";
 
-$id = REQUESTID;
+$id = $_REQUEST['id'] ?? null;
 
-$pdo = DB::getPdo();
+if (!ctype_digit($id)) {
+    echo json_encode([
+        "status" => "error",
+        "data" => "Invalid ID provided"
+    ]);
+    http_response_code(400);
+    exit();
+}
 
-$statement = $pdo->prepare("DELETE FROM tbl_kurse WHERE id_kurs = :id");
-$statement->bindValue("id", $id, PDO::PARAM_INT);
+$db = DB::getPdo();
+$statement = $db->prepare("DELETE FROM tbl_countries WHERE id_country = :id");
+$statement->bindParam("id", $id, PDO::PARAM_INT);
 
 if ($statement->execute()) {
-    $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
-    
     if ($statement->rowCount() == 0) {
         echo json_encode([
             "status"=> "error",
             "data"=> "Dataset not found"
         ]);
-        http_response_code(500);
-        die();
+        http_response_code(404);
     } else {
         echo json_encode([
             "status"=> "success",
-            "data"=> ""
+            "data"=> "Record deleted successfully"
         ]);
+        http_response_code(200);
     }
-    http_response_code(200);
-    die();
+} else {
+    echo json_encode([
+        'status' => 'error',
+        'data' => 'An error occurred while deleting the record'
+    ]);
+    http_response_code(500);
 }
 ?>

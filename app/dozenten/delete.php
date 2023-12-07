@@ -15,29 +15,28 @@ if (!ctype_digit($id)) {
     exit();
 }
 
-$pdo = DB::getPdo();
-
-$statement = $pdo->prepare("DELETE FROM tbl_kurse WHERE id_kurs = :id");
-$statement->bindValue("id", $id, PDO::PARAM_INT);
+$db = DB::getPdo();
+$statement = $db->prepare("DELETE FROM tbl_dozenten WHERE id_dozent = :id");
+$statement->bindParam("id", $id, PDO::PARAM_INT);
 
 if ($statement->execute()) {
     if ($statement->rowCount() == 0) {
         echo json_encode([
-            "status" => "error",
-            "data" => "Dataset not found"
+            "status"=> "error",
+            "data"=> "Dataset not found"
         ]);
         http_response_code(404);
     } else {
         echo json_encode([
-            "status" => "success",
-            "data" => "Record deleted successfully"
+            "status"=> "success",
+            "data"=> "Record deleted successfully"
         ]);
         http_response_code(200);
     }
 } else {
     echo json_encode([
-        "status" => "error",
-        "data" => "Error occurred while deleting the record"
+        'status' => 'error',
+        'data' => 'An error occurred while deleting the record'
     ]);
     http_response_code(500);
 }

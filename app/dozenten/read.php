@@ -12,10 +12,10 @@ $parts = explode('/', rtrim($requestUri, '/'));
 $id = end($parts);
 
 if (ctype_digit($id)) {
-    $statement = $pdo->prepare("SELECT * FROM tbl_countries WHERE id_country = :id LIMIT 1");
+    $statement = $pdo->prepare("SELECT * FROM tbl_dozenten WHERE id_dozent = :id LIMIT 1");
     $statement->bindParam("id", $id, PDO::PARAM_INT);
 } else {
-    $statement = $pdo->prepare("SELECT * FROM tbl_countries");
+    $statement = $pdo->prepare("SELECT * FROM tbl_dozenten");
 }
 
 if ($statement->execute()) {

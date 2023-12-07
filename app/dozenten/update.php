@@ -4,21 +4,22 @@ header("Content-Type: application/json; charset=utf-8");
 require_once $_SERVER["DOCUMENT_ROOT"] . "/ext/sanitize.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/ext/db.php";
 
-$post_data = json_decode(file_get_contents("php://input"), true);
+$data = json_decode(file_get_contents("php://input"), true);
 
-$vorname = $post_data["vorname"] ?? null;
-$nachname = $post_data["nachname"] ?? null;
-$strasse = $post_data["strasse"] ?? null;
-$plz = $post_data["plz"] ?? null;
-$ort = $post_data["ort"] ?? null;
-$nr_land = $post_data["nr_land"] ?? null;
-$geschlecht = $post_data["geschlecht"] ?? null;
-$telefon = $post_data["telefon"] ?? null;
-$handy = $post_data["handy"] ?? null;
-$email = $post_data["email"] ?? null;
-$birthdate = $post_data["birthdate"] ?? null;
+$id = $data["id_dozent"] ?? null;
+$vorname = $data["vorname"] ?? null;
+$nachname = $data["nachname"] ?? null;
+$strasse = $data["strasse"] ?? null;
+$plz = $data["plz"] ?? null;
+$ort = $data["ort"] ?? null;
+$nr_land = $data["nr_land"] ?? null;
+$geschlecht = $data["geschlecht"] ?? null;
+$telefon = $data["telefon"] ?? null;
+$handy = $data["handy"] ?? null;
+$email = $data["email"] ?? null;
+$birthdate = $data["birthdate"] ?? null;
 
-if (!$vorname || !$nachname || !$strasse || !$plz || !$ort || !$nr_land || !$geschlecht || !$telefon || !$handy || !$email || !$birthdate) {
+if (!$id || !$vorname || !$nachname || !$strasse || !$plz || !$ort || !$nr_land || !$geschlecht || !$telefon || !$handy || !$email || !$birthdate) {
     echo json_encode([
         "status" => "error",
         "data" => "Missing required fields"
@@ -28,7 +29,7 @@ if (!$vorname || !$nachname || !$strasse || !$plz || !$ort || !$nr_land || !$ges
 }
 
 $db = DB::getPdo();
-$statement = $db->prepare("INSERT INTO tbl_dozenten (vorname, nachname, strasse, plz, ort, nr_land, geschlecht, telefon, handy, email, birthdate) VALUES (:vorname, :nachname, :strasse, :plz, :ort, :nr_land, :geschlecht, :telefon, :handy, :email, :birthdate)");
+$statement = $db->prepare("UPDATE tbl_dozenten SET vorname = :vorname, nachname = :nachname, strasse = :strasse, plz = :plz, ort = :ort, nr_land = :nr_land, geschlecht = :geschlecht, telefon = :telefon, handy = :handy, email = :email, birthdate = :birthdate WHERE id_dozent = :id");
 
 $statement->bindParam(":vorname", $vorname, PDO::PARAM_STR);
 $statement->bindParam(":nachname", $nachname, PDO::PARAM_STR);
@@ -41,19 +42,19 @@ $statement->bindParam(":telefon", $telefon, PDO::PARAM_STR);
 $statement->bindParam(":handy", $handy, PDO::PARAM_STR);
 $statement->bindParam(":email", $email, PDO::PARAM_STR);
 $statement->bindParam(":birthdate", $birthdate, PDO::PARAM_STR);
+$statement->bindParam(":id", $id, PDO::PARAM_INT);
 
 if ($statement->execute()) {
-    $lastId = $db->lastInsertId();
     echo json_encode([
         "status"=> "success",
-        "data"=> ['id_dozent' => $lastId]
+        "data"=> "Record updated successfully"
     ]);
     http_response_code(200);
     exit();
 } else {
     echo json_encode([
         'status' => 'error',
-        'data' => 'An error occurred while inserting data'
+        'data' => 'An error occurred while updating the record'
     ]);
     http_response_code(500);
     exit();
