@@ -1,8 +1,8 @@
 <?php
 header("Content-Type: application/json; charset=utf-8");
 
-require_once $_SERVER["DOCUMENT_ROOT"] . "/ext/sanitize.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/ext/db.php";
+require_once dirname(__DIR__) . "/ext/sanitize.php";
+require_once dirname(__DIR__) . "/ext/db.php";
 
 $pdo = DB::getPdo();
 
@@ -24,7 +24,7 @@ if ($statement->execute()) {
     if (empty($rows)) {
         echo json_encode([
             "status" => "error",
-            "data" => "Dataset not found"
+            "data" => "It works"
         ]);
         http_response_code(404);
     } else {

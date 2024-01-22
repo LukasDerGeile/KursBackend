@@ -1,61 +1,59 @@
 <?php
-header("Content-Type: application/json; charset=utf-8");
 
-require_once $_SERVER["DOCUMENT_ROOT"] . "/ext/sanitize.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/ext/db.php";
+header('Content-Type: application/json; charset=utf-8');
 
-$post_data = json_decode(file_get_contents("php://input"), true);
+require_once $_SERVER['DOCUMENT_ROOT'] . '/ext/sanitize.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/ext/db.php';
 
-$vorname = $post_data["vorname"] ?? null;
-$nachname = $post_data["nachname"] ?? null;
-$strasse = $post_data["strasse"] ?? null;
-$plz = $post_data["plz"] ?? null;
-$ort = $post_data["ort"] ?? null;
-$nr_land = $post_data["nr_land"] ?? null;
-$geschlecht = $post_data["geschlecht"] ?? null;
-$telefon = $post_data["telefon"] ?? null;
-$handy = $post_data["handy"] ?? null;
-$email = $post_data["email"] ?? null;
-$birthdate = $post_data["birthdate"] ?? null;
 
-if (!$vorname || !$nachname || !$strasse || !$plz || !$ort || !$nr_land || !$geschlecht || !$telefon || !$handy || !$email || !$birthdate) {
+$post_data = json_decode(file_get_contents('php://input'), true);
+
+
+$vorname = $post_data['vorname'];
+$nachname = $post_data['nachname'];
+$strasse = $post_data['strasse'];
+$plz = $post_data['plz'];        
+$ort = $post_data['ort'];
+$nr_land = $post_data['nr_land'];
+$geschlecht = $post_data['geschlecht'];  
+$telefon = $post_data['telefon'];       
+$handy = $post_data['handy'];  
+$email = $post_data['email'];
+$birthdate = $post_data['birthdate'];  
+
+
+$pdo = DB::getPdo();
+
+$stmt = $pdo->prepare("INSERT INTO tbl_dozenten (vorname, nachname, strasse, plz, ort, nr_land, geschlecht, telefon, handy, email, birthdate) "
+        . "VALUES (:vorname, :nachname, :strasse, :plz, :ort, :nr_land, :geschlecht, :telefon, :handy, :email, :birthdate)");
+
+
+$stmt->bindValue('vorname', $vorname, PDO::PARAM_STR);
+$stmt->bindValue('nachname', $nachname, PDO::PARAM_STR);
+$stmt->bindValue('strasse', $strasse, PDO::PARAM_STR);
+$stmt->bindValue('plz', $plz, PDO::PARAM_INT);
+$stmt->bindValue('ort', $ort, PDO::PARAM_STR);
+$stmt->bindValue('nr_land', $plz, PDO::PARAM_INT);
+$stmt->bindValue('geschlecht', $geschlecht, PDO::PARAM_STR);
+$stmt->bindValue('telefon', $telefon, PDO::PARAM_INT);
+$stmt->bindValue('handy', $handy, PDO::PARAM_INT);
+$stmt->bindValue('email', $email, PDO::PARAM_STR);
+$stmt->bindValue('birthdate', $birthdate, PDO::PARAM_STR);
+
+
+if($stmt->execute()) {
     echo json_encode([
-        "status" => "error",
-        "data" => "Missing required fields"
-    ]);
-    http_response_code(400);
-    exit();
-}
-
-$db = DB::getPdo();
-$statement = $db->prepare("INSERT INTO tbl_dozenten (vorname, nachname, strasse, plz, ort, nr_land, geschlecht, telefon, handy, email, birthdate) VALUES (:vorname, :nachname, :strasse, :plz, :ort, :nr_land, :geschlecht, :telefon, :handy, :email, :birthdate)");
-
-$statement->bindParam(":vorname", $vorname, PDO::PARAM_STR);
-$statement->bindParam(":nachname", $nachname, PDO::PARAM_STR);
-$statement->bindParam(":strasse", $strasse, PDO::PARAM_STR);
-$statement->bindParam(":plz", $plz, PDO::PARAM_STR);
-$statement->bindParam(":ort", $ort, PDO::PARAM_STR);
-$statement->bindParam(":nr_land", $nr_land, PDO::PARAM_INT);
-$statement->bindParam(":geschlecht", $geschlecht, PDO::PARAM_STR);
-$statement->bindParam(":telefon", $telefon, PDO::PARAM_STR);
-$statement->bindParam(":handy", $handy, PDO::PARAM_STR);
-$statement->bindParam(":email", $email, PDO::PARAM_STR);
-$statement->bindParam(":birthdate", $birthdate, PDO::PARAM_STR);
-
-if ($statement->execute()) {
-    $lastId = $db->lastInsertId();
-    echo json_encode([
-        "status"=> "success",
-        "data"=> ['id_dozent' => $lastId]
+            'status' => 'success',
+            'data' => ['id' => $pdo->lastInsertId()]
     ]);
     http_response_code(200);
-    exit();
-} else {
-    echo json_encode([
+    die();
+
+} else{
+        echo json_encode([
         'status' => 'error',
-        'data' => 'An error occurred while inserting data'
+        'data' => 'An error occured'
     ]);
     http_response_code(500);
-    exit();
+    die();    
 }
-?>

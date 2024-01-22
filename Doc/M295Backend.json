@@ -1,0 +1,118 @@
+{
+	"info": {
+		"_postman_id": "b6fe176f-82e2-431e-8ad2-9f931903c5dc",
+		"name": "M295Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31268510"
+	},
+	"item": [
+		{
+			"name": "kurse/read.php",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "lukas.undefiniert.ch/kurse/read.php/100",
+					"host": [
+						"lukas",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						"read.php",
+						"100"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kurse/delete.php",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "lukas.undefiniert.ch/kurse/delete.php/5",
+					"host": [
+						"lukas",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						"delete.php",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kurse/create.php/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"kursnummer\": 123,\r\n    \"kursthema\": \"Random Theme\",\r\n    \"inhalt\": \"Random Content\",\r\n    \"nr_dozent\": 456,\r\n    \"startdatum\": \"2023-12-31\",\r\n    \"enddatum\": \"2024-01-01\",\r\n    \"dauer\": 2\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "lukas.undefiniert.ch/kurse/create.php/",
+					"host": [
+						"lukas",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						"create.php",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kurse/update.php",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"kursnummer\": 456,\r\n    \"kursthema\": \"New Theme\",\r\n    \"inhalt\": \"New Content\",\r\n    \"nr_dozent\": 789,\r\n    \"startdatum\": \"2023-11-15\",\r\n    \"enddatum\": \"2023-12-31\",\r\n    \"dauer\": 3\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "lukas.undefiniert.ch/kurse/update.php",
+					"host": [
+						"lukas",
+						"undefiniert",
+						"ch"
+					],
+					"path": [
+						"kurse",
+						"update.php"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

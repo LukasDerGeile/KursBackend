@@ -1,15 +1,15 @@
 <?php
 header("Content-Type: application/json; charset=utf-8");
 
-require_once $_SERVER["DOCUMENT_ROOT"] . "/ext/sanitize.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/ext/db.php";
+require_once dirname(__DIR__) . "/ext/sanitize.php";
+require_once dirname(__DIR__) . "/ext/db.php";
 
 $id = $_REQUEST['id'] ?? null;
 
 if (!ctype_digit($id)) {
     echo json_encode([
         "status" => "error",
-        "data" => "Invalid ID provided"
+        "data" => "No Dataset but delete working"
     ]);
     http_response_code(400);
     exit();

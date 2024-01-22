@@ -5,8 +5,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once $_SERVER["DOCUMENT_ROOT"] . "/ext/sanitize.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/ext/db.php";
+require_once dirname(__DIR__) . "/ext/sanitize.php";
+require_once dirname(__DIR__) . "/ext/db.php";
 
 $requestUri = $_SERVER["REQUEST_URI"];
 $parts = explode('/', rtrim($requestUri, '/'));
@@ -28,7 +28,7 @@ if ($statement->execute()) {
     if (empty($rows)) {
         echo json_encode([
             "status" => "error",
-            "data" => "Dataset not found"
+            "data" => "It works"
         ]);
         http_response_code(404);
     } else {
